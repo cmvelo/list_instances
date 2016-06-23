@@ -6,12 +6,12 @@ import (
 	"sync"
 
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
-    "github.com/aws/aws-sdk-go/aws/session"
 	"github.com/olekukonko/tablewriter"
 )
 
-var REGIONS []string = []string{"us-east-1", "eu-west-1", "ap-northeast-1"}
+var REGIONS []string = []string{"us-east-1", "eu-west-1", "ap-northeast-1", "ap-northeast-2"}
 
 func perror(err error) {
 	if err != nil {
@@ -20,7 +20,7 @@ func perror(err error) {
 }
 
 func getInstances(region string, c chan *instance) {
-    sess := session.New(&aws.Config{Region: &region})
+	sess := session.New(&aws.Config{Region: &region})
 	ec2Svc := ec2.New(sess)
 
 	ec2instances, err := ec2Svc.DescribeInstances(&ec2.DescribeInstancesInput{
